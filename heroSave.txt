@@ -1,0 +1,4 @@
+Jimmy Warrior 2 0 0 
+Thor Warrior 1 0 0
+Rick Rogue 5 0 0
+Morty Hunter 5 0 0

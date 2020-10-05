@@ -10,7 +10,7 @@ import swingy.view.ConView;
 
 public class Encounter{
     String input;
-    
+    ConView conView = new ConView();
     public boolean encounter(Villain villain, Hero hero, Scanner scanner){
         hero.saveHP();
         while (true){

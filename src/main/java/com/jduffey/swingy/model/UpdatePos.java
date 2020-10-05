@@ -7,6 +7,7 @@ import swingy.model.SaveHero;
 import swingy.view.ConView;
 
 public class UpdatePos{
+    ConView conView = new ConView();
     public Boolean updatePos(String input, Hero hero, Map map){
         if (input.equalsIgnoreCase("right") || input.equalsIgnoreCase("r")){
             if (hero.getX() != map.getMapX()){

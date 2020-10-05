@@ -11,7 +11,7 @@ import swingy.view.ConView;
 public class LoadHero{
     public Hero hero;
     public ArrayList<Hero> heroes = new ArrayList<>();
-    Conview conView = new ConView();
+    ConView conView = new ConView();
 
     public int loadHero(){
             File heroSave = new File("../heroSave.txt");

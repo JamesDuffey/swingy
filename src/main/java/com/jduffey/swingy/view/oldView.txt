@@ -1,0 +1,349 @@
+package swingy.view;
+
+import javax.swing.*;
+import java.awt.*;
+//import java.awt.GridConstraints;  
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import static javax.swing.JOptionPane.showMessageDialog;
+import swingy.view.SelectHero;
+import swingy.model.heroes.Hero;
+import swingy.model.LoadHero;
+import java.util.ArrayList;
+import swingy.model.NewHero;
+import swingy.controller.Controller;
+    
+public class View extends JFrame implements ActionListener{
+  public  Hero hero;
+  NewHero newHero = new NewHero();
+  Controller controller = new Controller();
+    //main menu
+    //JPanel gui = new JPanel();
+  JPanel cards;
+      //super("Swingy");
+      //Main Menu
+      private int currentCard = 1;
+      private CardLayout cl;
+         JButton select = new JButton("Select Hero");
+         JButton nHero = new JButton("New Hero");
+         JButton back = new JButton("Back");
+         JButton back1 = new JButton("Back");
+         JButton start = new JButton("Start");
+         JButton left = new JButton("left");
+         JButton right = new JButton("Right");
+         JButton up = new JButton("Up");
+         JButton down = new JButton("Down");
+
+         JButton fight = new JButton("Fight");
+         JButton run = new JButton("Run");
+         JButton exit = new JButton("Exit");
+
+         JTextField t1 = new JTextField("");
+         JLabel hName = new JLabel("Hero Name:");
+         JLabel hClass = new JLabel("Hero Class:");
+         String[] classes = {"Warrior", "Rogue", "Hunter"};
+         JComboBox cbClass = new JComboBox(classes);
+         JButton createHero = new JButton("Create Hero");
+
+      //Select Hero-
+        LoadHero loadhero = new LoadHero();
+        String heroes[] = loadhero.getSaved();  
+         JComboBox cb = new JComboBox(heroes);
+         JTextArea area = new JTextArea();
+         JTextArea info = new JTextArea();
+         JTextArea stats = new JTextArea();
+        CardLayout card;  
+        Container c; 
+    public View(){
+   
+        JPanel cardPanel = new JPanel(); 
+
+        cl = new CardLayout(); 
+        cardPanel.setLayout(cl); 
+        JPanel jp1 = new JPanel(); 
+        JPanel jp2 = new JPanel();  
+        JPanel jp3 = new JPanel();
+        JPanel jp4 = new JPanel();
+        GridLayout gl2 = new GridLayout(4,1);
+        jp2.setLayout(gl2); 
+        GridLayout gl3 = new GridLayout(5,2);
+        jp3.setLayout(gl3); 
+        GridLayout gl4 = new GridLayout(6,1);
+        jp4.setLayout(gl4);
+
+        area.setEditable(false);
+        info.setEditable(false);
+        stats.setEditable(false);
+        fight.setVisible(false);
+        run.setVisible(false);
+
+        jp1.add(select);
+        jp1.add(nHero);
+
+        jp2.add(cb); 
+        jp2.add(area);
+        jp2.add(start);
+        jp2.add(back);
+
+        jp3.add(up);
+        jp3.add(down);
+        jp3.add(left);
+        jp3.add(right);
+        jp3.add(info);
+        jp3.add(stats);
+        jp3.add(fight);
+        jp3.add(run);
+        jp3.add(exit);
+
+        jp4.add(hName);
+        jp4.add(t1);
+        jp4.add(hClass);
+        jp4.add(cbClass);
+        jp4.add(createHero);
+        jp4.add(back1);
+
+
+        cardPanel.add(jp1, "1"); 
+        cardPanel.add(jp2, "2"); 
+        cardPanel.add(jp3, "3"); 
+        cardPanel.add(jp4, "4"); 
+  
+        select.addActionListener(new ActionListener()  
+        { 
+            public void actionPerformed(ActionEvent arg0) 
+            { 
+                currentCard = 2; 
+                cl.show(cardPanel, "" + (currentCard));
+            } 
+        });
+
+        back.addActionListener(new ActionListener()  
+        { 
+            public void actionPerformed(ActionEvent arg0) 
+            { 
+                currentCard = 1; 
+                cl.show(cardPanel, "" + (currentCard));
+            } 
+        });
+
+        back1.addActionListener(new ActionListener()  
+        { 
+            public void actionPerformed(ActionEvent arg0) 
+            { 
+                currentCard = 1; 
+                cl.show(cardPanel, "" + (currentCard));
+            } 
+        });
+
+        nHero.addActionListener(new ActionListener()
+        { 
+            public void actionPerformed(ActionEvent arg0) 
+            { 
+                currentCard = 4; 
+                cl.show(cardPanel, "" + (currentCard));
+            } 
+        });
+
+        start.addActionListener(new ActionListener()  
+        { 
+            public void actionPerformed(ActionEvent arg0)
+            { 
+              boolean check = controller.newHeroGui(hName.getText(), (String) cb.getSelectedItem());
+                if (check){
+                  showMessageDialog(null, "Character name exists. Please use a different name");
+                }
+                else{
+                  currentCard = 3 ;
+                  cl.show(cardPanel, "" + (currentCard));
+                }
+            } 
+        });
+
+        cb.addActionListener(e -> {
+          if ((!cb.getSelectedItem().equals("Select Hero"))){
+            //LoadHero loadhero = new LoadHero();
+            String selection = (String) cb.getSelectedItem();
+            hero = loadhero.getHeroGui(selection);
+            String selected = hero.toStringGui();
+            area.setText(selected);
+          }
+          else{
+            area.setText("");
+          }
+        });
+
+        up.addActionListener(new ActionListener()
+        { 
+            public void actionPerformed(ActionEvent arg0) 
+            { 
+              fight.setVisible(true);
+              run.setVisible(true);
+              up.setVisible(false);
+              down.setVisible(false);
+              left.setVisible(false);
+              right.setVisible(false);
+            } 
+        });
+
+        fight.addActionListener(new ActionListener()
+        { 
+            public void actionPerformed(ActionEvent arg0) 
+            { 
+               run.setVisible(false);
+            } 
+        });
+
+        exit.addActionListener(new ActionListener()
+        { 
+            public void actionPerformed(ActionEvent arg0) 
+            { 
+              fight.setVisible(false);
+               up.setVisible(true);
+               down.setVisible(true);
+               left.setVisible(true);
+               right.setVisible(true);
+            } 
+        });
+
+  
+        // used to get content pane 
+        getContentPane().add(cardPanel, BorderLayout.NORTH); 
+        setLocation(750, 350);
+        setSize(400,400);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+      //GridConstraints gbc = new GridConstraints();
+        // setTitle("Swingy");
+        // GridLayout gbLayout = new GridLayout();
+        // this.setLayout(gbLayout);
+      // gbc.fill = GridConstraints.HORIZONTAL;  
+      // gbc.gridx = 0;
+      // gbc.gridy = 0;
+
+        // start.addActionListener(e -> {
+        //   area.setText("");
+        //   back.setVisible(false);
+        //   start.setVisible(false);
+        //   cb.setVisible(false);
+        //   left.setVisible(true);
+        //   right.setVisible(true);
+        //   up.setVisible(true);
+        //   down.setVisible(true);
+        // });
+          
+        
+
+      //select.addActionListener(e -> {
+        //select.setVisible(false);
+        //newHero.setVisible(false);
+        //   remove(select);
+        //   remove(newHero);
+        //   cb.setVisible(true);
+        //   area.setVisible(true);
+        //   back.setVisible(true);
+        //   start.setVisible(true);
+
+        //   revalidate();
+        //   repaint();
+        //   pack();
+          
+        // });
+
+        // back.addActionListener(e -> {
+        //   area.setText("");
+        //   cb.setSelectedItem("Select Hero");
+        //   cb.setVisible(false);
+        //   area.setVisible(false);
+        //   back.setVisible(false);
+        //   start.setVisible(false);
+        //   remove(cb);
+        //   remove(area);
+        //   remove(back);
+        //   remove(start);
+        //   add(select);
+        //   add(newHero);
+        //   select.setVisible(true);
+        //   newHero.setVisible(true);
+        //   revalidate();
+        //   repaint();
+        //   pack();
+        // });
+
+        // setLocation(200, 200);
+        // setPreferredSize(new Dimension(800, 800));
+        // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      //gbc.weightx = 0.8;
+      //gbc.weighty = 0.1;
+      //gbc.gridwidth = 1;
+      //add(select);
+      //gbc.gridx = 1;  
+      //gbc.gridy = 0;
+      //add(newHero);
+      //gbc.fill = GridBagConstraints.HORIZONTAL;    
+      
+      // gbc.fill = GridBagConstraints.VERTICAL;
+      
+      // gbc.gridx = 0;  
+      // gbc.gridy = 1; 
+      // gbc.ipady = 10;
+      //add(cb);
+      // gbc.ipady = 10;
+      // gbc.gridx = 1;  
+      // gbc.gridy = 1;  
+      //add(back);
+      // gbc.gridx = 4;  
+      // gbc.gridy = 1;
+      //add(start);
+      // gbc.gridx = 1;  
+      // gbc.gridy = 2;
+      // gbc.ipadx = 10;
+      // gbc.ipady = 10;
+      //add(area);
+      // gbc.fill = GridBagConstraints.HORIZONTAL;
+      // gbc.gridx = 0;
+      // gbc.gridy = 0;
+      //add(left);
+      // gbc.gridx = 1;
+      // gbc.gridy = 0;
+      //add(right);
+      // gbc.gridx = 2;
+      // gbc.gridy = 0;
+      //add(up);
+      // gbc.gridx = 3;
+      // gbc.gridy = 0;
+      //add(down);
+
+      // cb.setVisible(false);
+      // area.setVisible(false);
+      // back.setVisible(false);
+      // start.setVisible(false);
+      // left.setVisible(false);
+      // right.setVisible(false);
+      // up.setVisible(false);
+      // down.setVisible(false);
+      // pack();
+      // setVisible(true);
+    }
+
+     public void actionPerformed(ActionEvent e) {  
+      card.next(c);  
+    }
+
+    public void updatePos(){
+
+    }
+
+    public void updateTextArea(String data){
+      //area.setText(data);
+    }
+
+    public void updateStats(String data){
+
+    }
+
+    public void setInfoPanel(String info){
+      info.setText(info);
+    }
+}

@@ -1,11 +1,7 @@
 package swingy.model.villains;
 
 public class Elf extends Villain {
-    public Elf() {
-        this.name = "Elf";
-        this.hitPoints = 60;
-        this.attack = 15;
-        this.defense = 90;
-        this.exp = 14;
+    public Elf(int level) {
+        super("Elf", (30 + (level *2)), (15+level), 0.90, (100 * level));
     }
 }
